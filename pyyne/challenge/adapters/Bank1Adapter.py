@@ -11,9 +11,5 @@ class Bank1Adapter:
         return self.bankAccounts.get_account_balance(account_num)
 
     def get_transactions(self, account_num:int, from_date:datetime.datetime, to_date:datetime.datetime):     
-        result = ""   
-        for item in self.bankAccounts.get_transactions(account_num, from_date, to_date):
-            result += "\nqty: {}, type: {}, description: {}".format(item['amount'], item['type'], item['description'])
-        result += "\n"
-        return result
+        return self.bankAccounts.get_transactions(account_num, from_date, to_date)
 

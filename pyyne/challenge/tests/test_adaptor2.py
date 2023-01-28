@@ -1,5 +1,5 @@
 import unittest
-import datetime
+from datetime import datetime, timedelta
 from pyyne.challenge.adapters.Bank2Adapter import Bank2Adapter
 
 class TestBank2Adapter(unittest.TestCase):
@@ -11,20 +11,22 @@ class TestBank2Adapter(unittest.TestCase):
         self.assertIsInstance(balance, float)
 
     def test_get_transactions_valid_result_contains_amount(self):
-        from_date = datetime.datetime.now() - datetime.timedelta(days=30)
-        to_date = datetime.datetime.now()
+        from_date = datetime.now() - timedelta(days=30)
+        to_date = datetime.now()
         transactions = self.bank2Adapter.get_transactions(12345, from_date, to_date)
-        self.assertIn("qty:", transactions)
+        for transaction in transactions:
+            self.assertIsInstance(transaction.get_text(),str)
 
-    def test_get_transactions_valid_result_contains_type(self):
-        from_date = datetime.datetime.now() - datetime.timedelta(days=30)
-        to_date = datetime.datetime.now()
+    def test_get_transactions_valid_result_contains_valid_type_value(self):
+        from_date = datetime.now() - timedelta(days=30)
+        to_date = datetime.now()
         transactions = self.bank2Adapter.get_transactions(12345, from_date, to_date)
-        self.assertIn("type:", transactions)
+        for transaction in transactions:
+         self.assertIsInstance(transaction.get_type().value, str)
 
-    def test_get_transactions_valid_result_contains_description(self):
-        from_date = datetime.datetime.now() - datetime.timedelta(days=30)
-        to_date = datetime.datetime.now()
+    def test_get_transactions_valid_result_contains_valid_description_value(self):
+        from_date = datetime.now() - timedelta(days=30)
+        to_date = datetime.now()
         transactions = self.bank2Adapter.get_transactions(12345, from_date, to_date)
-        self.assertIn("description:", transactions)
-
+        for transaction in transactions:
+            self.assertIsInstance(transaction.get_text(),str)

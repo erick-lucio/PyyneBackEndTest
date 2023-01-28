@@ -11,13 +11,12 @@ class TestBank1Adapter(unittest.TestCase):
         self.assertIsInstance(balance, float)
 
     def test_get_transactions(self):
-        from_date = datetime.now() - datetime.now() + timedelta(days=30)
+        from_date = datetime.now() - timedelta(days=30)
         to_date = datetime.now()
         transactions = self.bank1Adapter.get_transactions(12345, from_date, to_date)
-        self.assertIsInstance(transactions, str)
-        self.assertIn("qty:", transactions)
-        self.assertIn("type:", transactions)
-        self.assertIn("description:", transactions)
+        self.assertIsInstance(transactions, list)
+        for transaction in transactions:
+            self.assertIsInstance(transaction, dict)
         
     # def test_get_transactions_invalid_account(self):
     #     from_date = datetime.now() - datetime.now() + timedelta(days=30)
@@ -29,27 +28,11 @@ class TestBank1Adapter(unittest.TestCase):
     #     from_date = datetime.now() - timedelta(days=60)
     #     to_date = datetime.now() - datetime.now() + timedelta(days=30)
     #     with self.assertRaises(Exception):
-    #         self.bank1Adapter.get_transactions(12345, from_date, to_date)           
-
-        
-    def test_get_transactions_valid_result_contains_type(self):
-        from_date = datetime.now() - datetime.now() + timedelta(days=30)
-        to_date = datetime.now()
-        transactions = self.bank1Adapter.get_transactions(12345, from_date, to_date)
-        self.assertIn("type:", transactions)
-
-    def test_get_transactions_valid_result_contains_valid_amount_value(self):
-        from_date = datetime.now() - datetime.now() + timedelta(days=30)
-        to_date = datetime.now()
-        transactions = self.bank1Adapter.get_transactions(12345, from_date, to_date)
-        self.assertRegex(transactions, r'qty: \d+')      
+    #         self.bank1Adapter.get_transactions(12345, from_date, to_date)    
 
 
-    def test_get_transactions_valid_result_contains_valid_description_value(self):
-        from_date = datetime.now() - datetime.now() + timedelta(days=30)
-        to_date = datetime.now()
-        transactions = self.bank1Adapter.get_transactions(12345, from_date, to_date)
-        self.assertRegex(transactions, r'description: [A-Za-z]+')
+
+
 
     def test_get_transactions_valid_account_num(self):
         from_date = datetime.now() - datetime.now() + timedelta(days=30)
@@ -58,17 +41,19 @@ class TestBank1Adapter(unittest.TestCase):
         self.assertIsNotNone(transactions)
 
     def test_get_transactions_valid_result_contains_amount(self):
-        from_date = datetime.now() - datetime.now() + timedelta(days=30)
+        from_date = datetime.now() - timedelta(days=30)
         to_date = datetime.now()
         transactions = self.bank1Adapter.get_transactions(12345, from_date, to_date)
-        self.assertIn("qty:", transactions)       
+        for transaction in transactions:
+            self.assertIsNotNone(transaction.get('amount'))   
 
         
     def test_get_transactions_valid_result_contains_description(self):
-        from_date = datetime.now() - datetime.now() + timedelta(days=30)
+        from_date = datetime.now() - timedelta(days=30)
         to_date = datetime.now()
         transactions = self.bank1Adapter.get_transactions(12345, from_date, to_date)
-        self.assertIn("description:", transactions)
+        for transaction in transactions:
+            self.assertIsNotNone(transaction.get('description'))
         
     def test_get_transactions_with_valid_account_number(self):
         from_date = datetime.now() - datetime.now() + timedelta(days=30)

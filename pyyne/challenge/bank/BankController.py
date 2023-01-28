@@ -16,7 +16,16 @@ class BankController:
 
     def print_transactions(self, accountId, from_date, to_date):
         transactions1 = self.bank1_adapter.get_transactions(accountId, from_date, to_date)
-        print("Transactions for bank1 account {}: between {}: and {}:".format(accountId, from_date, to_date), transactions1)
-        transactions2 = self.bank2_adapter.get_transactions(accountId, from_date, to_date)
-        print("Transactions for bank2 account {}: between {}: and {}:".format(accountId, from_date, to_date), transactions2)
+        transactions1Content = ""   
+        for item in transactions1:
+            transactions1Content += "\nqty: {}, type: {}, description: {}".format(item['amount'], item['type'], item['description'])
+        transactions1Content += "\n"
+        print("Transactions for bank1 account {}: between {}: and {}:".format(accountId, from_date, to_date), transactions1Content)
 
+        transactions2 = self.bank2_adapter.get_transactions(accountId, from_date, to_date)
+        transactions2Content = ""   
+        for item in transactions2:
+            transactions2Content += "\nqty: {}, type: {}, description: {}".format(item.get_amount(), item.get_type().value, item.get_text())
+        transactions2Content += "\n"
+
+        print("Transactions for bank2 account {}: between {}: and {}:".format(accountId, from_date, to_date), transactions2Content)
